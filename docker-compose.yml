@@ -1,0 +1,25 @@
+version: "3"
+services:
+  pmweb-hotel:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_USER=testepmweb
+      - MONGO_PASSWORD=teste123
+      - MONGO_IP=mongo
+      - MONGO_PORT=27017
+    depends_on: # Como o serviço node-app depende do mongo, o serviço mongo vai começar primeiro
+      - mongo
+    command: npm run prod
+
+  mongo:
+    image: mongo
+    volumes:
+      - mongo-db:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=testepmweb
+      - MONGO_INITDB_ROOT_PASSWORD=teste123
+
+volumes:
+  mongo-db:
