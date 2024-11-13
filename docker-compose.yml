@@ -9,9 +9,22 @@ services:
       - MONGO_PASSWORD=teste123
       - MONGO_IP=mongo
       - MONGO_PORT=27017
-    depends_on: # Como o serviço node-app depende do mongo, o serviço mongo vai começar primeiro
+    depends_on:
       - mongo
     command: npm run prod
+
+  pmweb-hotel-test:
+    build: .
+    environment:
+      - MONGO_USER=testepmweb
+      - MONGO_PASSWORD=teste123
+      - MONGO_IP=mongo
+      - MONGO_PORT=27017
+    depends_on:
+      - mongo
+    command: npm test
+    # Evita que o serviço fique executando continuamente no modo watch
+    restart: "no"
 
   mongo:
     image: mongo
