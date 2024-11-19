@@ -1,45 +1,40 @@
 const hotelModel = require("../models/hotel");
 
-const getHotelById = async (request, response) => {
+const getHotelById = async (req, res) => {
   try {
-    const hotel = await hotelModel.find({ _id: request.params.id });
-    response.send(hotel);
+    const hotel = await hotelModel.find({ _id: req.params.id });
+    res.send(hotel);
   } catch (error) {
-    response.status(500).send(error);
-    throw error; // Lança o erro para que a Promise seja rejeitada
+    res.status(500).send(error);
   }
 };
 
-
-const getHotelByReservationId = async (request, response) => {
+const updateHotel = async (req, res) => {
   try {
-    // Use elemMatch corretamente dentro do objeto de consulta
-    const hotel = await hotelModel.find({
-      reservationsId: { $elemMatch: { _id: request.params.id } } // Uso correto do $elemMatch
-    });
-
-    response.send(hotel);
+    const hotel = await hotelModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.send(hotel);
   } catch (error) {
-    response.status(500).send(error);
-    throw error; // Lançar o erro para rejeitar a Promise
+    res.status(500).send(error);
   }
 };
 
-
-const createHotel = async (request, response) => {
+const deleteHotel = async (req, res) => {
   try {
-    const hotel = new hotelModel(request.body);
-    console.log('Hotel before save:', hotel);
-    await hotel.save();
-    response.send(hotel);
+    const hotel = await hotelModel.findByIdAndDelete(req.params.id);
+    res.send(hotel);
   } catch (error) {
-    response.status(500).send(error);
+    res.status(500).send(error);
   }
 };
 
-
-module.exports = {
-  getHotelById,
-  createHotel,
-  getHotelByReservationId,
+const createHotel = async (req, res) => {
+  try {
+    const newHotel = new hotelModel(req.body);
+    await newHotel.save();
+    res.send(newHotel);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
+
+module.exports = { getHotelById, updateHotel, deleteHotel, createHotel };
