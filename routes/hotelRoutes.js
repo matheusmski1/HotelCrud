@@ -1,13 +1,17 @@
+
+
 const express = require("express");
 const app = express();
 const {
   getHotelById,
   createHotel,
-  getHotelByReservationId,
+  updateHotel,
+  deleteHotel,
 } = require("../controllers/hotelController");
 
 app.get("/hotel/:id", getHotelById);
-app.get("/hotel/reservations/:id", getHotelByReservationId);
 app.post("/createHotel", createHotel);
+app.post("/update/hotel/:id", updateHotel);
+app.delete("/delete/hotel/:id", deleteHotel);
 
 module.exports = app;

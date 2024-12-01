@@ -7,8 +7,6 @@ const {
   MONGO_PORT,
 } = require("./config/connection");
 const hotelRoutes = require("./routes/hotelRoutes.js");
-const guestRoutes = require("./routes/guestRoutes.js");
-const reservationRoutes = require("./routes/reservationRoutes.js");
 
 const app = express();
 app.use(express.json());
@@ -20,8 +18,6 @@ mongoose.connect(mongoUrl, {
 });
 
 app.use(hotelRoutes);
-app.use(guestRoutes);
-app.use(reservationRoutes);
 
 app.listen(5000, () => {
   console.log("Server is running...");
